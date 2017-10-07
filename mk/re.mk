@@ -599,7 +599,7 @@ ifneq ($(HAVE_EPOLL),)
 CFLAGS  += -DHAVE_EPOLL
 endif
 ifneq ($(HAVE_KQUEUE),)
-CFLAGS  += -DHAVE_KQUEUE
+#CFLAGS  += -DHAVE_KQUEUE   # NOTE: Broken in this branch
 endif
 CFLAGS  += -DHAVE_UNAME
 CFLAGS  += -DHAVE_UNISTD_H
