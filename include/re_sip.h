@@ -223,9 +223,9 @@ struct sip_contact {
 
 /** SIP Configuration */
 struct sip_conf {
-	unsigned sip_t1;  /**< Transaction Timer T1 */
-	unsigned sip_t2;  /**< Transaction Timer T2 */
-	unsigned sip_t4;  /**< Transaction Timer T4 */
+	unsigned sip_t1;  /**< Transaction Timer T1 [ms] */
+	unsigned sip_t2;  /**< Transaction Timer T2 [ms] */
+	unsigned sip_t4;  /**< Transaction Timer T4 [ms] */
 };
 
 struct sip;
