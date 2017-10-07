@@ -221,6 +221,13 @@ struct sip_contact {
 	enum sip_transp tp;
 };
 
+/** SIP Configuration */
+struct sip_conf {
+	unsigned sip_t1;  /**< Transaction Timer T1 */
+	unsigned sip_t2;  /**< Transaction Timer T2 */
+	unsigned sip_t4;  /**< Transaction Timer T4 */
+};
+
 struct sip;
 struct sip_lsnr;
 struct sip_request;
@@ -253,6 +260,7 @@ int  sip_listen(struct sip_lsnr **lsnrp, struct sip *sip, bool req,
 int  sip_debug(struct re_printf *pf, const struct sip *sip);
 int  sip_send(struct sip *sip, void *sock, enum sip_transp tp,
 	      const struct sa *dst, struct mbuf *mb);
+struct sip_conf *sip_conf(struct sip *sip);
 
 
 /* transport */

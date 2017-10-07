@@ -20,6 +20,7 @@ struct sip {
 	sip_exit_h *exith;
 	void *arg;
 	bool closing;
+	struct sip_conf conf;
 };
 
 

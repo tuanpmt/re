@@ -161,8 +161,9 @@ static void retransmit_handler(void *arg)
 		       st->mb);
 
 	st->txc++;
-	tmr_start(&st->tmrg, MIN(SIP_T1<<st->txc, SIP_T2), retransmit_handler,
-		  st);
+	tmr_start(&st->tmrg, MIN(sip_conf(st->sip)->sip_t1<<st->txc,
+				 sip_conf(st->sip)->sip_t2),
+		  retransmit_handler, st);
 }
 
 
@@ -188,7 +189,7 @@ static bool ack_handler(struct sip *sip, const struct sip_msg *msg)
 			break;
 		}
 
-		tmr_start(&st->tmr, SIP_T4, tmr_handler, st);
+		tmr_start(&st->tmr, sip_conf(sip)->sip_t4, tmr_handler, st);
 		tmr_cancel(&st->tmrg);
 		st->state = CONFIRMED;
 		break;
@@ -367,15 +368,17 @@ int sip_strans_reply(struct sip_strans **stp, struct sip *sip,
 			st->state = PROCEEDING;
 		}
 		else if (scode < 300) {
-			tmr_start(&st->tmr, 64 * SIP_T1, tmr_handler, st);
+			tmr_start(&st->tmr, 64 * sip_conf(sip)->sip_t1,
+				  tmr_handler, st);
 			st->state = ACCEPTED;
 		}
 		else {
-			tmr_start(&st->tmr, 64 * SIP_T1, tmr_handler, st);
+			tmr_start(&st->tmr, 64 * sip_conf(sip)->sip_t1,
+				  tmr_handler, st);
 			st->state = COMPLETED;
 
 			if (!sip_transp_reliable(st->msg->tp))
-				tmr_start(&st->tmrg, SIP_T1,
+				tmr_start(&st->tmrg, sip_conf(sip)->sip_t1,
 					  retransmit_handler, st);
 		}
 	}
@@ -385,8 +388,9 @@ int sip_strans_reply(struct sip_strans **stp, struct sip *sip,
 		}
 		else {
 			if (!sip_transp_reliable(st->msg->tp)) {
-				tmr_start(&st->tmr, 64 * SIP_T1, tmr_handler,
-					  st);
+				tmr_start(&st->tmr,
+					  64 * sip_conf(sip)->sip_t1,
+					  tmr_handler, st);
 				st->state = COMPLETED;
 			}
 			else {
